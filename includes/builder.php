@@ -62,7 +62,7 @@ class WSB_Builder{
 			$pages = [];
 			foreach ($project as $page){
 				if(isset($page['image_link'])){
-					$pages[] = $page['image_link'];
+					$pages[$page['page']] = $page['image_link'];
 				}
 			}
 
