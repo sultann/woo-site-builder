@@ -67,7 +67,7 @@ global $woocommerce;
             <!--- Name -->
             <div class="name">
                 <div>
-                    <input type="text" id="project" placeholder="Project Name">
+                    <input type="text" id="project" placeholder="Project Name" value="Untitled Page">
                     <span id="clear" class="clear"></span>
                 </div>
             </div>

@@ -26,6 +26,8 @@ class WSB_Builder{
 		add_action( 'wp_ajax_save_builder_project', [$this, 'save_builder_project'] );
 		add_action( 'wp_ajax_nopriv_remove_builder_project', [$this, 'remove_builder_project'] );
 		add_action( 'wp_ajax_remove_builder_project', [$this, 'remove_builder_project'] );
+
+		add_action('woocommerce_thankyou', [$this, 'add_builder_products_to_order'], 111, 1);
 	}
 
 
@@ -48,6 +50,26 @@ class WSB_Builder{
 	 */
 	function woo_site_builder_callback(){
 		include WSB_TEMPLATES_DIR.'/builder-page.php';
+	}
+
+
+	function  add_builder_products_to_order($order_id){
+		if(!empty(WC()->session->get( 'side_builder' ))){
+			$user_reference = WC()->session->get( 'side_builder' );
+
+			$project = get_transient($this->make_transient_name($user_reference));
+			if(empty($project)) return ;
+			$pages = [];
+			foreach ($project as $page){
+				if(isset($page['image_link'])){
+					$pages[] = $page['image_link'];
+				}
+			}
+
+			update_post_meta($order_id, 'builder_pages', $pages);
+			setcookie('user_reference', '', time() - (86400 * 30), '/');
+		}
+
 	}
 
 

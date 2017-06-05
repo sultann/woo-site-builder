@@ -514,7 +514,11 @@ jQuery(document).ready(function($) {
                     success:function(response) {
                         console.log(response);
                        if(response.success == true){
-                           make_preview_list(response.data)
+                           if(response.data.length>0){
+                               make_preview_list(response.data)
+                           }else{
+                               $('.pages-preview').html('');
+                           }
                        }
 
                        if(response.price>0){
