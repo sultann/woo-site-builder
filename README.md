@@ -11,7 +11,7 @@
 The best WordPress plugin ever made!
 
 ## Description ##
-
+The plugin adds a drag and drop page builder features to a woocommerce page
 
 
 ## Installation ##
