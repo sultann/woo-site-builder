@@ -211,38 +211,7 @@ jQuery(document).ready(function($) {
 
 
     //New Project
-    $('.clear').click(function() {
-        setTimeout(function(){
-            if (confirm('You are about to start a new project. Are you sure to remove this?')){
-                var urlParts = get_url_parts();
-                var user_reference = $.cookie('user_reference');
-                if((urlParts !== null) && (urlParts.name !== undefined) && (user_reference !== undefined)){
-                    jQuery.post({
-                        url: wsb.ajaxurl,
-                        data: {
-                            'action':'remove_builder_project',
-                            'name' : urlParts.name,
-                            'user_reference' : user_reference
-                        },
-                        success:function(response) {
 
-                            clear_project();
-
-                        },
-                        error: function(errorThrown){
-                            console.log(errorThrown);
-                        }
-
-                    });
-                }
-
-
-
-
-
-            }
-        },250);
-    });
 
 
 
@@ -547,7 +516,7 @@ jQuery(document).ready(function($) {
         var html = '';
         var parent_link = window.location.href.split('#', 2);
         var ul = $('<ul>');
-
+        console.log('received data', data);
         data.forEach(function (item) {
             if(!item['page']) return;
             if(!item['blocks']) return;
@@ -573,6 +542,62 @@ jQuery(document).ready(function($) {
         $('.pages-preview').append(ul);
 
     }
+
+
+    $('.add-page').on('click', function(){
+        if (confirm("Do you really want to create a new page?") == true) {
+
+            var new_page_name = confirm("Please enter separate page names.");
+
+            $('#project').val('');
+
+            clear_project();
+
+
+        }
+    });
+
+    $('.clear').click(function() {
+        setTimeout(function(){
+            if (confirm('Do you really want to remove this page?')){
+                var urlParts = get_url_parts();
+                var user_reference = $.cookie('user_reference');
+                if((urlParts !== null) && (urlParts.name !== undefined) && (user_reference !== undefined)){
+                    jQuery.post({
+                        url: wsb.ajaxurl,
+                        data: {
+                            'action':'remove_builder_page',
+                            'page' : urlParts.name,
+                            'user_reference' : user_reference
+                        },
+                        success:function(response) {
+                            clear_project();
+                            if(response.success == true){
+                                make_preview_list(response.data)
+                            }
+
+                            if(response.price>0){
+                                $('.builder-cart').show();
+                                $('.builder-cart .cart-price').text('$'+response.price);
+                            }else{
+                                $('.builder-cart').hide();
+                            }
+
+                        },
+                        error: function(errorThrown){
+                            console.log(errorThrown);
+                        }
+
+                    });
+                }
+
+
+
+
+
+            }
+        },250);
+    });
 
 
 

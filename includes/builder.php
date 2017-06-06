@@ -24,17 +24,20 @@ class WSB_Builder{
 		add_action('init', [$this, 'init']);
 		add_action( 'wp_ajax_nopriv_save_builder_project', [$this, 'save_builder_project'] );
 		add_action( 'wp_ajax_save_builder_project', [$this, 'save_builder_project'] );
-		add_action( 'wp_ajax_nopriv_remove_builder_project', [$this, 'remove_builder_project'] );
-		add_action( 'wp_ajax_remove_builder_project', [$this, 'remove_builder_project'] );
+		add_action( 'wp_ajax_nopriv_remove_builder_page', [$this, 'remove_builder_page'] );
+		add_action( 'wp_ajax_remove_builder_page', [$this, 'remove_builder_page'] );
 
 		add_action('woocommerce_thankyou', [$this, 'add_builder_products_to_order'], 111, 1);
+
+		add_action('template_include', [$this, 'show_page_builder']);
 	}
 
 
 	function load_assets(){
-		wp_enqueue_style('site-builder-main', WSB_ASSETS.'/css/woo-site-builder.css', [], date('i'));
+		wp_register_style('site-builder-main', WSB_ASSETS.'/css/woo-site-builder.css', [], date('i'));
 		wp_register_script('site-builder-main', WSB_ASSETS.'/js/woo-site-builder.js', ['jquery'], date('i'), true);
 		wp_localize_script('site-builder-main', 'wsb', ['ajaxurl' => admin_url( 'admin-ajax.php' )]);
+		wp_enqueue_style('site-builder-main');
 		wp_enqueue_script('site-builder-main');
 	}
 
@@ -45,10 +48,22 @@ class WSB_Builder{
 		add_shortcode('woo_site_builder', [$this, 'woo_site_builder_callback']);
 	}
 
+	function show_page_builder($template){
+		global $wp;
+		if(isset($wp->request) && ($wp->request == 'site-builder')){
+
+
+			$template = trailingslashit( WSB_TEMPLATES_DIR ).'builder-html-page.php';
+		}
+		return $template;
+
+	}
+
 	/**
 	 *
 	 */
 	function woo_site_builder_callback(){
+
 		include WSB_TEMPLATES_DIR.'/builder-page.php';
 	}
 
@@ -196,6 +211,63 @@ class WSB_Builder{
 		return $project;
 	}
 
+		function remove_builder_page(){
+
+		error_log(print_r($_POST, true));
+			$has_page = true;
+
+			if(!isset($_POST['user_reference']) || trim($_POST['user_reference']) == ''){
+				wp_send_json(['error' => 'Could not find User reference']);
+				wp_die();
+
+			}
+
+			if(!isset($_POST['page']) || trim($_POST['page']) == ''){
+				$this->error[] = 'Could not find any project Name';
+				$has_page = false;
+
+
+			}
+
+
+			$user_reference = esc_attr($_POST['user_reference']);
+
+			$project = $this->get_project($user_reference);
+
+			$temp_transient = $user_reference.'_last_page';
+
+			if($has_page){
+				$page = esc_attr($_POST['page']);
+				set_transient($temp_transient, $page, 12 * HOUR_IN_SECONDS);
+
+			}else{
+				$page = get_transient($temp_transient)?get_transient($temp_transient):'';
+				error_log('got page name '. $page);
+				delete_transient($temp_transient);
+			}
+
+
+			$project = $this->remove_page($project, $page, $user_reference);
+
+
+
+
+
+
+
+			wp_send_json([
+				'success' => empty($this->error)?true:false,
+				'data' => $project,
+				'price' => $this->update_cart($project, $user_reference),
+				'error' => $this->error
+			]);
+
+
+
+
+			wp_die();
+
+		}
 
 	function remove_page($project, $page, $user_reference){
 	error_log('remove page');

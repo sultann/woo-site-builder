@@ -8,12 +8,6 @@ global $woocommerce;
 ?>
 <div class="woo-page-builder">
 
-
-
-
-
-
-
     <div id="menu" class="hidden">
         <div id="sideMenu" class="ui-droppable">
             <!--- Main Menu -->
@@ -67,7 +61,7 @@ global $woocommerce;
             <!--- Name -->
             <div class="name project-page-name">
                 <div>
-                    <input type="text" id="project" placeholder="Project Name" value="Untitled Page">
+                    <input type="text" id="project" placeholder="Page Name" value="Untitled Page">
                     <span id="clear" class="clear"></span>
                 </div>
             </div>

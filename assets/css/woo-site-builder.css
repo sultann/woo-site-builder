@@ -5,6 +5,40 @@
  * Copyright (c) 2017 PluginEver
  * Licensed under the GPLv2+ license.
  */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul, li {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+strong {
+  font-weight: 700; }
+
+html {
+  position: static !important;
+  top: 0 !important; }
+
 /* Main Stuff */
 *, *:before, *:after {
   -moz-box-sizing: border-box;
@@ -20,17 +54,6 @@ body {
 
 .woo-page-builder {
   position: relative; }
-  .woo-page-builder ol, .woo-page-builder ul, .woo-page-builder li {
-    list-style: none; }
-  .woo-page-builder div, .woo-page-builder span, .woo-page-builder applet, .woo-page-builder object, .woo-page-builder iframe, .woo-page-builder h1, .woo-page-builder h2, .woo-page-builder h3, .woo-page-builder h4, .woo-page-builder h5, .woo-page-builder h6, .woo-page-builder p, .woo-page-builder blockquote, .woo-page-builder pre, .woo-page-builder a, .woo-page-builder abbr, .woo-page-builder acronym, .woo-page-builder address, .woo-page-builder big, .woo-page-builder cite, .woo-page-builder code, .woo-page-builder del, .woo-page-builder dfn, .woo-page-builder em, .woo-page-builder img, .woo-page-builder ins, .woo-page-builder kbd, .woo-page-builder q, .woo-page-builder s, .woo-page-builder samp, .woo-page-builder small, .woo-page-builder strike, .woo-page-builder strong, .woo-page-builder sub, .woo-page-builder sup, .woo-page-builder tt, .woo-page-builder var, .woo-page-builder b, .woo-page-builder u, .woo-page-builder i, .woo-page-builder center, .woo-page-builder dl, .woo-page-builder dt, .woo-page-builder dd, .woo-page-builder ol, .woo-page-builder ul, .woo-page-builder li, .woo-page-builder fieldset, .woo-page-builder form, .woo-page-builder label, .woo-page-builder legend, .woo-page-builder table, .woo-page-builder caption, .woo-page-builder tbody, .woo-page-builder tfoot, .woo-page-builder thead, .woo-page-builder tr, .woo-page-builder th, .woo-page-builder td, .woo-page-builder article, .woo-page-builder aside, .woo-page-builder canvas, .woo-page-builder details, .woo-page-builder embed, .woo-page-builder figure, .woo-page-builder figcaption, .woo-page-builder footer, .woo-page-builder header, .woo-page-builder hgroup, .woo-page-builder menu, .woo-page-builder nav, .woo-page-builder output, .woo-page-builder ruby, .woo-page-builder section, .woo-page-builder summary, .woo-page-builder time, .woo-page-builder mark, .woo-page-builder audio, .woo-page-builder video {
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    margin: 0;
-    padding: 0; }
-  .woo-page-builder article, .woo-page-builder aside, .woo-page-builder details, .woo-page-builder figcaption, .woo-page-builder figure, .woo-page-builder footer, .woo-page-builder header, .woo-page-builder hgroup, .woo-page-builder menu, .woo-page-builder nav, .woo-page-builder section {
-    display: block; }
   .woo-page-builder .add-page {
     display: inline-block;
     position: fixed;
