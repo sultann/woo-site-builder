@@ -1,5 +1,5 @@
 # Woo Site Builder #
-**Contributors:**      WebDevStudios  
+**Contributors:**      sultann  
 **Donate link:**         
 **Tags:**  
 **Requires at least:** 3.6.0  
