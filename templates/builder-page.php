@@ -63,9 +63,9 @@ global $woocommerce;
 
     <!--- CONTENT -->
     <div id="blocksHolder" class="hide-ui">
-        <div class="container">
+        <div class="woo-page-builder-container">
             <!--- Name -->
-            <div class="name">
+            <div class="name project-page-name">
                 <div>
                     <input type="text" id="project" placeholder="Project Name" value="Untitled Page">
                     <span id="clear" class="clear"></span>

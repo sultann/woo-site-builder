@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     var compactBannerTemplate = '/**\n' +
         ' * <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> | <%= pkg.homepage %> | Copyright (c) <%= grunt.template.today("yyyy") %>; | Licensed GPLv2+\n' +
         ' */\n';
-
+    //<script src="//localhost:35729/livereload.js"></script>
     // Project configuration
     grunt.initConfig({
 
@@ -103,12 +103,15 @@ module.exports = function(grunt) {
         },
 
         watch:  {
+            options: {
+                livereload: true,
+            },
 
             sass: {
                 files: ['assets/css/sass/*.scss'],
                 tasks: ['sass', 'cssmin'],
                 options: {
-                    debounceDelay: 500
+                    debounceDelay: 500,
                 }
             },
 
@@ -117,10 +120,11 @@ module.exports = function(grunt) {
                 // tasks: ['jshint', 'concat', 'uglify'],
                 tasks: ['concat', 'uglify'],
                 options: {
-                    debounceDelay: 500
+                    debounceDelay: 500,
                 }
             }
         },
+
 
         /**
          * check WP Coding standards

@@ -349,3 +349,9 @@ function wps_site_builder_page(){
 
 	include WSB_TEMPLATES_DIR.'/site-builder.php';
 }
+
+add_filter( 'woocommerce_thankyou_order_received_text', 'wpb_thank_you' );
+function wpb_thank_you() {
+	$added_text = '<p>You can access the PDF Download from the <a href="/account-page">My Account Page</a>.</p>';
+	return $added_text ;
+}
