@@ -166,11 +166,17 @@ module.exports = function(grunt) {
                 src: [
                     '**',
                     '!node_modules/**',
+                    '!assets/css/sass/**',
+                    '!assets/images/src/**',
+                    '!assets/js/src/**',
+                    '!assets/js/vendor/**',
+                    '!tests/**',
                     '!.codekit-cache/**',
                     '!.idea/**',
                     '!build/**',
                     '!bin/**',
                     '!.git/**',
+                    '!nbproject/**',
                     '!Gruntfile.js',
                     '!package.json',
                     '!composer.json',
@@ -183,16 +189,13 @@ module.exports = function(grunt) {
                     '!plugin-deploy.sh',
                     '!export.sh',
                     '!config.codekit',
-                    '!nbproject/*',
-                    '!tests/**',
                     '!README.md',
                     '!CONTRIBUTING.md',
-                    '!**/*~',
                     '!.csscomb.json',
                     '!.editorconfig',
                     '!.jshintrc',
                     '!.tmp',
-                    '!assets/src/**'
+                    '!*.md'
                 ],
                 dest: 'build/'
             }
@@ -201,7 +204,7 @@ module.exports = function(grunt) {
             main: {
                 options: {
                     mode: 'zip',
-                    archive: './build/woo-site-builder' + pkg.version + '.zip'
+                    archive: './build/woo-site-builder-' + pkg.version + '.zip'
                 },
                 expand: true,
                 cwd: 'build/',
@@ -219,9 +222,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks( 'grunt-wp-i18n' );
     grunt.loadNpmTasks('grunt-contrib-sass');
-
+    grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.loadNpmTasks('grunt-phpcs');
@@ -234,7 +239,7 @@ module.exports = function(grunt) {
 
 
 
-    grunt.registerTask('release', ['makepot']);
+    grunt.registerTask('release', ['makepot', 'zip']);
 
     grunt.registerTask('zip', ['clean', 'copy', 'compress']);
 
