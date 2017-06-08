@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Woo Site Builder Beta
  * Plugin URI:  http://pluginever.com
- * Description: The best WordPress plugin ever made!
+ * Description: The Plugin add a site builder to the site.
  * Version:     0.1.0
  * Author:      PluginEver
  * Author URI:  http://pluginever.com
@@ -59,6 +59,12 @@ class Woo_Site_Builder {
 	 * Activate the plugin
 	 */
 	function _activate() {
+		if (in_array( 'woocommerce/woocommerce.php',apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ){
+
+			$this->admin_notice('error', '<strong>Woo Site Builder</strong> works with WooCommerce But the plugin could not find WooCommerce. so, Please install WooCommerce first before activating <strong>Woo Site Builder</strong>.');
+			deactivate_plugins( plugin_basename( __FILE__ ) );
+		}
+
 		// Make sure any rewrite functionality has been loaded
 		flush_rewrite_rules();
 	}
@@ -107,11 +113,6 @@ class Woo_Site_Builder {
 		require WSB_INCLUDES.'/functions.php';
 		require WSB_INCLUDES.'/builder.php';
 
-
-//		$file = self::dir( 'includes/'. $filename .'.php' );
-//		if ( file_exists( $file ) ) {
-//			return include_once( $file );
-//		}
 
 	}
 

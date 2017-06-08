@@ -61,7 +61,8 @@ global $woocommerce;
             <!--- Name -->
             <div class="name project-page-name">
                 <div>
-                    <input type="text" id="project" placeholder="Page Name" value="Untitled Page">
+                    <input type="text" id="project" placeholder="Page Name">
+                    <span id="builder-edit" style="display: none;"></span>
                     <span id="clear" class="clear"></span>
                 </div>
             </div>
@@ -71,7 +72,8 @@ global $woocommerce;
             </div>
             <!--- Footer -->
             <div class="footer">
-                <a id="builder-checkout" class="button" href="<?php echo $woocommerce->cart->get_checkout_url();?>">Checkout</a>
+                <a id="builder-save" class="button">Save</a>
+                <a id="builder-checkout" class="button" href="<?php echo $woocommerce->cart->get_checkout_url();?>" style="display: none;">Checkout</a>
             </div>
 
             <div class="pages-preview">

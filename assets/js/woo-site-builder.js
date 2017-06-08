@@ -1,5 +1,5 @@
 /**
- * Woo Site Builder - v0.1.0 - 2017-06-06
+ * Woo Site Builder - v0.1.0 - 2017-06-08
  * http://pluginever.com
  *
  * Copyright (c) 2017;
@@ -846,7 +846,7 @@ jQuery(document).ready(function($) {
         }
     });
 
-
+    get_preview();
     //show elemtns on hover
     $('#sideMenu > ul').menuAim({
         activate: function(event){
@@ -877,9 +877,8 @@ jQuery(document).ready(function($) {
     //load sample elements
     //Check URL's Hash
     var urlHash = window.location.hash.substring(1);
-    console.log(urlHash);
     if (urlHash){
-        console.log('make builder');
+
         addSample();
     }
 
@@ -887,14 +886,11 @@ jQuery(document).ready(function($) {
     // Add Sample by String
     function addSample(string){
 
-        console.log('adding items to the browser');
-        console.log('String is ', string);
 
-
+        console.log('add sample called');
         if (!string) {
             var params = $.getUrlVars();
 
-            console.log(params);
             var structure = params.structure;
             if (params.name){
                 var projectName = params.name.split('_').join(' ');
@@ -946,7 +942,8 @@ jQuery(document).ready(function($) {
 
     //Update Hash
     function updateHash(){
-
+        var hash = window.location.hash.substring(1);
+        //if((hash == '') || (hash == undefined)) return;
         window.saved_project = false;
 
 
@@ -988,12 +985,11 @@ jQuery(document).ready(function($) {
         }
 
 
+        get_preview();
 
-        var parts = $.getUrlVars(urlParts);
+       // var parts = $.getUrlVars(urlParts);
 
 
-
-        save_project(parts.name, parts.structure);
 
 
 
@@ -1017,10 +1013,19 @@ jQuery(document).ready(function($) {
     //Name for Project
     var maxLetters = 35;
     $('#project').bind('keydown',function() {
+        if($(this).hasClass('disabled')) return ;
         if ($('#project').val().length > maxLetters) $('#project').val($('#project').val().substring(0,maxLetters));
     });
-
+    if($('#project').val() !== ''){
+        console.log('project has value');
+        $('#project').attr('disabled', 'disabled');
+    }
     $('#project').bind('change',function() {
+        if($('#project').val() !== ''){
+            $('#project').attr('disabled', 'disabled');
+            return false;
+        }
+
         updateHash();
     });
 
@@ -1047,13 +1052,15 @@ jQuery(document).ready(function($) {
 
         checkBlocksHeight();
         checkMaxSize();
-        updateHash();
+        window.location.href = wsb.siteurl+"site-builder/";
+        // location.reload();
+        //updateHash();
 
         $('body').removeClass('preview');
         setTimeout(function(){
-            $('#subMenu').removeClass('hidden');
-            $('#header').addClass('visible');
-            $('#sideMenu ul li:first-child').addClass('selected');
+            // $('#subMenu').removeClass('hidden');
+            // $('#header').addClass('visible');
+            // $('#sideMenu ul li:first-child').addClass('selected');
         },500);
 
     }
@@ -1195,7 +1202,6 @@ jQuery(document).ready(function($) {
 
 
     $( "#subMenu li" ).draggable(draggableParams).click(function(){
-        console.log('draging');
         //Clickable
         if ($("#blocks li").size() < maxBlocks) {
 
@@ -1222,7 +1228,6 @@ jQuery(document).ready(function($) {
         hoverClass: "hovered",
         tolerance: "touch",
         drop: function(event, ui) {
-            console.log('dropeed 2');
             $(ui.draggable).remove();
             $('.placeholder').animate({height:0,opacity:0,borderWidth:0}, 250);
             checkMaxSize();
@@ -1280,7 +1285,7 @@ jQuery(document).ready(function($) {
 
 
     function save_project(project_name,structures) {
-
+        console.log('save_project was called');
         var user_reference = $.cookie('user_reference');
 
         if(undefined == user_reference){
@@ -1288,7 +1293,6 @@ jQuery(document).ready(function($) {
             $.cookie('user_reference', user_reference, { expires: 7, path: '/' });
         }
 
-        console.log('triggered');
         // var imageUrl = '';
         // if(window.imageLink !== 'undefined'){
         //     imageUrl = window.imageLink;
@@ -1296,7 +1300,7 @@ jQuery(document).ready(function($) {
 
         domtoimage.toJpeg(document.getElementById("builder"), { quality: 0.95 })
             .then(function (imageLink) {
-                console.log('trigging ajax');
+
                 jQuery.post({
                     url: wsb.ajaxurl,
                     data: {
@@ -1309,7 +1313,7 @@ jQuery(document).ready(function($) {
                     success:function(response) {
                         console.log(response);
                        if(response.success == true){
-                           if(response.data.length>0){
+                           if(response.data){
                                make_preview_list(response.data)
                            }else{
                                $('.pages-preview').html('');
@@ -1338,12 +1342,13 @@ jQuery(document).ready(function($) {
 
 
     function make_preview_list(data) {
+        console.log('this was called');
         if(!data) return;
         var html = '';
         var parent_link = window.location.href.split('#', 2);
         var ul = $('<ul>');
-        console.log('received data', data);
-        data.forEach(function (item) {
+        $.each(data, function (key, item) {
+            console.log(item);
             if(!item['page']) return;
             if(!item['blocks']) return;
             var hash  = '#structure='+item['blocks'];
@@ -1351,7 +1356,6 @@ jQuery(document).ready(function($) {
 
             var li = $('<li>').append('<a href="#" data-link="'+parent_link[0]+hash+'">');
             li.find('a').on('click', function (e) {
-                console.log('clicked');
                 location.href = $(this).data('link');
                 location.reload();
                 return false;
@@ -1369,19 +1373,6 @@ jQuery(document).ready(function($) {
 
     }
 
-
-    $('.add-page').on('click', function(){
-        if (confirm("Do you really want to create a new page?") == true) {
-
-            var new_page_name = confirm("Please enter separate page names.");
-
-            $('#project').val('');
-
-            clear_project();
-
-
-        }
-    });
 
     $('.clear').click(function() {
         setTimeout(function(){
@@ -1426,7 +1417,68 @@ jQuery(document).ready(function($) {
     });
 
 
+    $('#builder-save').on('click', function () {
+        var parts = get_url_parts();
+        save_project(parts.name, parts.structure);
 
+
+        return false;
+    });
+
+    $('.add-page').on('click', function(){
+        if (confirm("Do you really want to create a new page?") == true) {
+
+            var new_page_name = confirm("Please enter separate page name.");
+
+            $('#project').val('');
+
+            clear_project();
+            // location.href = "http://sitebuilder.dev/site-builder/";
+            get_preview();
+            // location.reload();
+
+        }
+    });
+
+    // console.log(wsb);
+
+
+    function get_preview() {
+        var user_reference = $.cookie('user_reference');
+        if ((user_reference !== undefined)) {
+            jQuery.post({
+                url: wsb.ajaxurl,
+                data: {
+                    'action': 'get_builder_preview',
+                    'user_reference': user_reference
+                },
+                success: function (response) {
+
+                    if (response.success == true) {
+                        make_preview_list(response.data)
+                    }
+
+                    if (response.price > 0) {
+                        $('.builder-cart').show();
+                        $('#builder-checkout').show();
+                        // $('#builder-edit').show();
+                        $('.builder-cart .cart-price').text('$' + response.price);
+                    } else {
+                        $('.builder-cart').hide();
+                        $('#builder-checkout').hide();
+                        // $('#builder-edit').hide();
+                    }
+
+
+
+                },
+                error: function (errorThrown) {
+                    console.log(errorThrown);
+                }
+
+            });
+        }
+    }
 
 
 });

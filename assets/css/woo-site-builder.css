@@ -57,7 +57,7 @@ body {
   .woo-page-builder .add-page {
     display: inline-block;
     position: fixed;
-    top: 20px;
+    top: 60px;
     right: 30px;
     background: rgba(32, 34, 36, 0.1) url("../images/plus.svg") no-repeat top;
     background-size: 40px;
@@ -69,10 +69,34 @@ body {
     -o-transition: left 0.5s, background-position 0.5s, background-color 0.25s;
     transition: left 0.5s, background-position 0.5s, background-color 0.25s;
     z-index: 20; }
+  .woo-page-builder input#project.disabled {
+    cursor: no-drop !important; }
+  .woo-page-builder #builder-edit {
+    background: #fff url("../images/pen.png") no-repeat center;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 0px;
+    background-size: 20px;
+    margin: -63px 90px 9px;
+    cursor: pointer;
+    -webkit-transition: 0.25s;
+    -moz-transition: 0.25s;
+    -ms-transition: 0.25s;
+    -o-transition: 0.25s;
+    transition: 0.25s;
+    display: block;
+    text-align: center;
+    background-color: transparent;
+    opacity: 1; }
+    .woo-page-builder #builder-edit:before, .woo-page-builder #builder-edit:after {
+      content: "";
+      display: table;
+      table-layout: fixed; }
   .woo-page-builder .toggle {
     display: inline-block;
     position: fixed;
-    top: 20px;
+    top: 60px;
     left: 210px;
     background: rgba(32, 34, 36, 0.1) url("../images/icons.svg") no-repeat top;
     background-size: 40px;
@@ -155,7 +179,7 @@ body {
     display: block;
     text-align: center;
     background-color: transparent;
-    opacity: 0; }
+    opacity: 1; }
   .woo-page-builder .hide-ui span.clear {
     opacity: 0;
     visibility: hidden; }
@@ -354,7 +378,7 @@ body {
     margin-left: -190px;
     width: 190px;
     height: 100%;
-    background: #54aaff url("../images/close.svg") no-repeat center;
+    background: #3F51B5 url("../images/close.svg") no-repeat center;
     top: 0;
     z-index: 100;
     -webkit-transition: 0.5s cubic-bezier(0.39, 1.31, 0.28, 1), left 0.5s;
@@ -362,7 +386,8 @@ body {
     -o-transition: 0.25s, left 0.5s;
     transition: background 0.5s cubic-bezier(0.39, 1.31, 0.28, 1), left 0.5s;
     background-size: contain;
-    background-position: -150px; }
+    background-position: -150px;
+    padding-top: 50px; }
   .woo-page-builder #sideMenu.active {
     background-position: 0; }
   .woo-page-builder #sideMenu.active li, .woo-page-builder #sideMenu.active .aboutMenu {
@@ -398,7 +423,7 @@ body {
     list-style: none; }
   .woo-page-builder #sideMenu li {
     font-size: 17px;
-    color: #8c9392;
+    color: white;
     padding: 9px 28px;
     cursor: pointer;
     -webkit-transition: 0.25s;
@@ -454,7 +479,7 @@ body {
     -o-transform: translateY(0px) scale(1);
     transform: translateY(0px) scale(1); }
   .woo-page-builder #subMenu {
-    background: #202224;
+    background: #3F51B5;
     border-left: 2px solid #27292b;
     padding: 29px;
     position: fixed;
@@ -474,7 +499,8 @@ body {
     -moz-transition: left 0.5s;
     -ms-transition: left 0.5s;
     -o-transition: left 0.5s;
-    transition: left 0.5s; }
+    transition: left 0.5s;
+    padding-top: 50px; }
   .woo-page-builder #subMenu.hidden {
     left: -140px; }
   .woo-page-builder #subMenu strong {
@@ -651,7 +677,8 @@ body {
     z-index: 9999;
     color: #fff;
     position: fixed;
-    width: 190px; }
+    width: 190px;
+    background-color: rgba(255, 255, 255, 0.2); }
     .woo-page-builder .builder-cart.hidden {
       display: none !important; }
     .woo-page-builder .builder-cart span {

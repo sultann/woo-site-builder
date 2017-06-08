@@ -3,16 +3,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 class WSB_Builder{
 
-
-//	protected $transient_name;
-//	protected $transient;
-//	protected $user_reference;
-//	protected $blocks;
-//	protected $price;
-//	protected $products;
-//	protected $project;
-//	protected $project_page;
-//	protected $cart;
 	protected $last_page;
 	protected $error = [];
 
@@ -27,18 +17,33 @@ class WSB_Builder{
 		add_action( 'wp_ajax_nopriv_remove_builder_page', [$this, 'remove_builder_page'] );
 		add_action( 'wp_ajax_remove_builder_page', [$this, 'remove_builder_page'] );
 
+		add_action( 'wp_ajax_get_builder_preview', [$this, 'get_builder_preview'] );
+		add_action( 'wp_ajax_nopriv_get_builder_preview', [$this, 'get_builder_preview'] );
+
+
+
 		add_action('woocommerce_thankyou', [$this, 'add_builder_products_to_order'], 111, 1);
 
 		add_action('template_include', [$this, 'show_page_builder']);
+
+
 	}
 
-
+	/**
+	 * Add all the assets required by the plugin
+	 */
 	function load_assets(){
 		wp_register_style('site-builder-main', WSB_ASSETS.'/css/woo-site-builder.css', [], date('i'));
 		wp_register_script('site-builder-main', WSB_ASSETS.'/js/woo-site-builder.js', ['jquery'], date('i'), true);
-		wp_localize_script('site-builder-main', 'wsb', ['ajaxurl' => admin_url( 'admin-ajax.php' )]);
-		wp_enqueue_style('site-builder-main');
-		wp_enqueue_script('site-builder-main');
+		wp_localize_script('site-builder-main', 'wsb', ['ajaxurl' => admin_url( 'admin-ajax.php' ), 'siteurl' =>trailingslashit(get_site_url())]);
+
+		if(isset($GLOBALS['site_builder_page'])){
+			wp_enqueue_style('site-builder-main');
+			wp_enqueue_script('site-builder-main');
+		}
+
+
+
 	}
 
 
@@ -51,13 +56,14 @@ class WSB_Builder{
 	function show_page_builder($template){
 		global $wp;
 		if(isset($wp->request) && ($wp->request == 'site-builder')){
-
-
+			$GLOBALS['site_builder_page'] = true;
 			$template = trailingslashit( WSB_TEMPLATES_DIR ).'builder-html-page.php';
 		}
 		return $template;
 
 	}
+
+
 
 	/**
 	 *
@@ -144,15 +150,12 @@ class WSB_Builder{
 
 		}else{
 			$page = get_transient($temp_transient)?get_transient($temp_transient):'';
-			error_log('got page name '. $page);
 			delete_transient($temp_transient);
 		}
 
-		error_log('page name '. $page);
 
 
 		if(!$has_blocks){
-			error_log('No blocks');
 			$project = $this->remove_page($project, $page, $user_reference);
 		}else{
 			$image_link = $this->make_image($page, $user_reference);
@@ -173,7 +176,8 @@ class WSB_Builder{
 			'success' => empty($this->error)?true:false,
 			'data' => $project,
 			'price' => $this->update_cart($project, $user_reference),
-			'error' => $this->error
+			'error' => $this->error,
+			'debug' => $_POST
 		]);
 
 
@@ -182,6 +186,28 @@ class WSB_Builder{
 		wp_die();
 	}
 
+
+	function get_builder_preview(){
+		if(!isset($_POST['user_reference']) || trim($_POST['user_reference']) == ''){
+			wp_send_json(['error' => 'Could not find User reference']);
+			wp_die();
+
+		}
+
+		$user_reference = esc_attr($_POST['user_reference']);
+
+		$project = $this->get_project($user_reference);
+
+		wp_send_json([
+			'success' => empty($this->error)?true:false,
+			'data' => $project,
+			'price' => $this->update_cart($project, $user_reference),
+			'error' => $this->error,
+			'debug' => $_POST
+		]);
+
+
+	}
 
 
 
@@ -213,7 +239,6 @@ class WSB_Builder{
 
 		function remove_builder_page(){
 
-		error_log(print_r($_POST, true));
 			$has_page = true;
 
 			if(!isset($_POST['user_reference']) || trim($_POST['user_reference']) == ''){
@@ -242,7 +267,6 @@ class WSB_Builder{
 
 			}else{
 				$page = get_transient($temp_transient)?get_transient($temp_transient):'';
-				error_log('got page name '. $page);
 				delete_transient($temp_transient);
 			}
 
@@ -259,7 +283,8 @@ class WSB_Builder{
 				'success' => empty($this->error)?true:false,
 				'data' => $project,
 				'price' => $this->update_cart($project, $user_reference),
-				'error' => $this->error
+				'error' => $this->error,
+				'debug' => $_POST
 			]);
 
 
@@ -270,22 +295,17 @@ class WSB_Builder{
 		}
 
 	function remove_page($project, $page, $user_reference){
-	error_log('remove page');
 		$key = $this->is_page_in_project($page, $project);
 		if($key !== null){
-			error_log('found key'. $key);
 			if(isset($project[$key]['image_link'])){
-				error_log('found image'. $project[$key]['image_link']);
 				$file_name = basename($project[$key]['image_link']);
 				$wp_upload = wp_upload_dir();
 				$file_path  = trailingslashit($wp_upload['path']).$file_name;
 
 				if(file_exists($file_path)){
-					error_log('found file and removing it');
 					@unlink($file_path);
 				}
 
-				error_log('removing image ');
 			}
 			unset($project[$key]);
 		}
@@ -325,8 +345,6 @@ class WSB_Builder{
 		if(empty($project)){
 			return [];
 		}
-		error_log('getting products');
-		error_log(print_r($project, true));
 		$product_ids = wp_list_pluck($project, 'blocks');
 		$products = [];
 		foreach ($product_ids as $product_id){
@@ -378,7 +396,6 @@ class WSB_Builder{
 
 
 	function update_cart($project, $user_reference){
-		error_log('updating cart');
 		$product_ids = $this->get_products($project);
 		$products = [];
 		$price = 0;
@@ -414,6 +431,8 @@ class WSB_Builder{
 
 
 
+
+
 }
 new WSB_Builder();
 
@@ -422,8 +441,4 @@ function wps_site_builder_page(){
 	include WSB_TEMPLATES_DIR.'/site-builder.php';
 }
 
-add_filter( 'woocommerce_thankyou_order_received_text', 'wpb_thank_you' );
-function wpb_thank_you() {
-	$added_text = '<p>You can access the PDF Download from the <a href="/account-page">My Account Page</a>.</p>';
-	return $added_text ;
-}
+
