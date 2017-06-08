@@ -1,6 +1,6 @@
 <?php
 /**structural*/
-
+ob_start();
 $categories = woo_site_builder_get_product_categories();
 
 $category_slugs = wp_list_pluck($categories, 'slug');
@@ -85,3 +85,7 @@ global $woocommerce;
 
     <div class="builder-cart" style="display: none;"><span class="cart-icon"><img src="<?php echo WSB_ASSETS.'/images/shopping-cart.svg'; ?>" alt=""></span><span class="cart-text">CART</span><span class="cart-price">$10</span></div>
 </div>
+<?php
+$output = ob_get_contents();
+ob_get_clean();
+echo $output;

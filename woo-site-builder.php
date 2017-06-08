@@ -45,8 +45,8 @@ class Woo_Site_Builder {
 	 */
 	public function __construct() {
 
-		register_activation_hook( __FILE__, array( $this, '_activate' ) );
-		register_deactivation_hook( __FILE__, array( $this, '_deactivate' ) );
+		register_activation_hook( __FILE__, array( $this, 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 		add_action( 'admin_init', array( $this, 'admin_hooks' ) );
 		add_action( 'init', [ $this, 'localization_setup' ] );
 
@@ -58,10 +58,9 @@ class Woo_Site_Builder {
 	/**
 	 * Activate the plugin
 	 */
-	function _activate() {
-		if (in_array( 'woocommerce/woocommerce.php',apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ){
+	function activate() {
+		if (!in_array( 'woocommerce/woocommerce.php',apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ){
 
-			$this->admin_notice('error', '<strong>Woo Site Builder</strong> works with WooCommerce But the plugin could not find WooCommerce. so, Please install WooCommerce first before activating <strong>Woo Site Builder</strong>.');
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 		}
 
@@ -73,7 +72,7 @@ class Woo_Site_Builder {
 	 * Deactivate the plugin
 	 * Uninstall routines should be in uninstall.php
 	 */
-	function _deactivate() {
+	function deactivate() {
 
 	}
 
