@@ -146,7 +146,7 @@ class Woo_Site_Builder {
 	function load_assets(){
 		wp_register_style('woo-site-builder', WSB_ASSETS.'/css/woo-site-builder.css', [], date('i'));
 		wp_register_script('woo-site-builder', WSB_ASSETS.'/js/woo-site-builder.js', ['jquery'], date('i'), true);
-		wp_localize_script('woo-site-builder', 'jsobject', ['ajaxurl' => admin_url( 'admin-ajax.php' )]);
+		wp_localize_script('woo-site-builder', 'wsb', ['ajaxurl' => admin_url( 'admin-ajax.php' ), 'siteurl' =>trailingslashit(get_site_url())]);
 		wp_enqueue_style('woo-site-builder');
 		wp_enqueue_script('woo-site-builder');
 	}
