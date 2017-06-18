@@ -174,6 +174,7 @@ jQuery(document).ready(function($) {
 
         }else{
             $('.remove-page').hide();
+            $('#builder-save').hide();
             $('#builder-blocks').addClass('create-page');
             $('#builder-category-menu').addClass('disabled');
 
@@ -452,7 +453,7 @@ jQuery(document).ready(function($) {
 
                 swal({
                         title: "Are you sure?",
-                        text: "You have unsaved page leaving this page, you will loose those.",
+                        text: "You have unsaved layout leaving this page you will loose those.",
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#DD6B55",

@@ -18,7 +18,12 @@ $main_color: #3F51B5;
 .preview #woo-site-builder #builder-elements-menu { left:-350px  !important; padding: 0; }
 .preview #woo-site-builder #woo-builder-container-main { padding-left:0 !important; }
 .preview  #woo-site-builder .toggle { left:20px; background-position:bottom; background-color:rgba(32, 34, 36, 0.2);}
+.preview .woo-builder-container-main{padding-left: 0 !important;}
 
+.admin-bar #woo-site-builder ul{padding-top: 30px !important;}
+.site-builder-page{
+  background: #F7F6F5 !important;
+}
 #woo-site-builder{
   position: relative;
   font-family: proxima-nova,'Helvetica Neue', Helvetica, Arial, serif;
@@ -32,6 +37,43 @@ $main_color: #3F51B5;
 
   .dragging span{
     opacity: 0 !important;
+  }
+  .tools-button-group{
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    .builder-button{
+      display: block;
+      margin:0 auto;
+      max-width: 140px;
+
+
+      &.preview{
+        float: left;
+        margin-top: 5px;
+      }
+      &.create-page{
+        float: right;
+        margin-top: 5px;
+      }
+      &.remove-page, &.back-to-home{
+        display: inline-block;
+      }
+    }
+
+      // padding-top: 20px;
+      //.preview{float: left;}
+      //.create-page{display: inline-block !important; float: right;}
+      //.builder-button{ display: inline-block}
+      //.center-btns{
+      //  display: inline-block;
+      //  line-height: 1;
+      //  .builder-button{
+      //    line-height: 1;
+      //  }
+      //}
   }
 
   .builder-button{
@@ -85,8 +127,9 @@ $main_color: #3F51B5;
     bottom: 0;
     z-index: 999;
     width: 190px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     left: 0;
+    text-align: center;
     padding: 10px 20px;
     color: #fff;
     i.fa.fa-shopping-cart {
@@ -132,7 +175,10 @@ $main_color: #3F51B5;
     }
 
   }
-
+  #builder-save {
+    font-weight: normal;
+    text-transform: none;
+  }
   #builder-elements-menu{
     background: #3F51B5;
     border-left: 2px solid #27292b;

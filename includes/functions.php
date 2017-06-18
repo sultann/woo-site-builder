@@ -13,6 +13,12 @@ function woo_site_builder_get_product_categories() {
     );
     $woo_all_categories = get_categories( $args );
 
+	foreach ($woo_all_categories as $key=>$cat){
+		if (strpos(strtolower($cat->name), 'child theme') !== false) {
+			unset($woo_all_categories[$key]);
+		}
+	}
+
     return $woo_all_categories;
 }
 

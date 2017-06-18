@@ -4,9 +4,19 @@ ob_start();
 $categories = woo_site_builder_get_product_categories();
 
 $category_slugs = wp_list_pluck($categories, 'slug');
+
+
 global $woocommerce;
+if(wp_is_mobile()){
+    ?>
+    <div style="margin: 20px auto;text-align: center;padding: 20px;">
+        <h3 style=''>Site builder does not works on mobile device.</h3>
+        <p>Return to <a href="<?php echo get_site_url();?>">homepage</a></p>
+    </div>
+    <?php
+    exit();
+}
 ?>
-<script src="//localhost:35729/livereload.js"></script>
 <div id="woo-site-builder">
     <div id="builder-main-menu">
         <div id="builder-category-menu">
@@ -39,25 +49,24 @@ global $woocommerce;
 
         </div>
 
-        <div id="builder-cart" style="display: none;"><div class="shopping-cart-inside"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <div class="prince-wrapper"> <span class="builder-currecncy">$</span><span class="builder-price"></span></div></div></div>
+        <div id="builder-cart" style="display: none;"><div class="shopping-cart-inside"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="prince-wrapper"> <span class="builder-currecncy">$</span><span class="builder-price"></span></span></div></div>
 
     </div>
     <div class="woo-builder-container-main">
 
+        <div class="tools-button-group">
+            <button class="builder-button small preview">Live Preview</button>
+            <button class="builder-button small remove-page">Remove Page</button>
+            <button onclick="location.href='<?php echo get_site_url(); ?>'" class="builder-button small back-to-home" style="text-transform: uppercase;">Homepage</button>
+            <button class="builder-button small create-page">Add New Page</button>
+        </div>
+
         <div class="woo-builder-container">
-            <div class="tools-button-group">
-                <button class="builder-button small preview">Preview</button>
-                <button class="builder-button small create-page">Add New Page</button>
-                <button class="builder-button small remove-page">Remove Page</button>
-                <button class="builder-button small">Save</button>
-                <a href="<?php echo get_site_url(); ?>" class="builder-button small" style="text-transform: uppercase;">Home Page</a>
-                <button class="builder-button small">Checkout</button>
-            </div>
 
 
             <div id="page-name"></div>
             <div class="builder-project-canvas">
-                <ul id="builder-blocks" class="builder-project-canvas-inside empty container">
+                <ul id="builder-blocks" class="builder-project-canvas-inside empty">
 
                 </ul>
 
@@ -68,8 +77,8 @@ global $woocommerce;
             </div>
 
             <div id="builder-footer">
-                <button id="builder-save" class="builder-button ">Save</button>
-                <a id="builder-checkout" class="builder-button" href="<?php echo $woocommerce->cart->get_checkout_url();?>" style="display: none;">Checkout</a>
+                <button id="builder-save" class="builder-button ">Save & Update Cart</button>
+                <a id="builder-checkout" class="builder-button" href="<?php echo $woocommerce->cart->get_checkout_url();?>" style="display: none;">Go to Checkout</a>
             </div>
 
 
